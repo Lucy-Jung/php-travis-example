@@ -9,6 +9,6 @@ class IndexController extends Controller
 
     public function indexAction()
     {
-        return "<h2>Hello!</h2>";
+        return "<h1>Hello!</h1>";
     }
 }
