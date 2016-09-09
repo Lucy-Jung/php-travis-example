@@ -44,7 +44,7 @@ try {
 
             // Define a route
             $router->add(
-                "/",
+                "/", 
                 [
                     "namespace"  => "App\Controllers",
                     "controller" => "index",
