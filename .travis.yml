@@ -1,0 +1,30 @@
+sudo: required
+services:
+  - docker
+before_install:
+#  - docker build -t yjkim0/php-travis .
+  - docker pull yjkim0/php-travis
+  - docker run -d -v `pwd`:/var/www --name php-travis yjkim0/php-travis
+  - docker ps -a
+before_script:
+  - docker exec php-travis /bin/sh -c "cd /var/www; composer update"
+  - docker exec php-travis /bin/sh -c "cd /var/www; ./vendor/bin/phpcs -sw --standard=PSR2 app"
+  - docker exec php-travis /bin/sh -c "cd /var/www; ./vendor/bin/phpmd app text cleancode"
+script:
+  - docker exec php-travis /bin/sh -c "cd /var/www; phpunit"
+
+# language: php
+# php:
+#   - '7.0'
+
+# # before_script: echo '' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+# before_script:
+#   - wget https://github.com/phalcon/cphalcon/archive/v3.0.0.tar.gz
+#   - tar zxvf v3.0.0.tar.gz
+#   - cd cphalcon-3.0.0/build
+#   - ./install
+#   - echo "extension=phalcon.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+#   - cd ../../
+#   - composer update
+#   - ./vendor/bin/phpcs -sw --standard=PSR2 app
+#   - ./vendor/bin/phpmd app text cleancode
